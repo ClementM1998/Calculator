@@ -46,9 +46,21 @@ public class Lexer {
                         data += c;
                         type = Type.OPERATOR;
                     } else if (isSymbol(c)) {
-                        tokens.add(new Token(
+                        tokens.add(new Token(Type.NUMBER, data));
+                        data = "";
+                        data += c;
+                        type = Type.SYMBOL;
+                    } else if (c == '\n') {
+                        tokens.add(new Token(Type.NUMBER, data));
+                        data = "";
+                        type = Type.EOF;
+                    } else {
+                        data += c;
+                        type = Type.ERROR;
+                    }
                     break;
                 case Type.OPERATOR:
+                    
                     break;
                 case Type.SYMBOL:
                     break;
