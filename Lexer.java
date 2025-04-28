@@ -33,6 +33,20 @@ public class Lexer {
                     }
                     break;
                 case Type.NUMBER:
+                    if (c == ' ') {
+                        tokens.add(new Token(Type.NUMBER, data));
+                        data = "";
+                        type = Type.READ;
+                    } else if (isNumber(c)) {
+                        data += c;
+                        type = Type.NUMBER;
+                    } else if (isOperator(c)) {
+                        tokens.add(new Token(Type.NUMBER, data));
+                        data = "";
+                        data += c;
+                        type = Type.OPERATOR;
+                    } else if (isSymbol(c)) {
+                        tokens.add(new Token(
                     break;
                 case Type.OPERATOR:
                     break;
