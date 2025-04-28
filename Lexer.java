@@ -60,9 +60,58 @@ public class Lexer {
                     }
                     break;
                 case Type.OPERATOR:
-                    
+                    if (c == ' ') {
+                        tokens.add(new Token(Type.OPERATOR, data));
+                        data = "";
+                        type = Type.READ;
+                    } else if (isNumber(c)) {
+                        tokens.add(new Token(Type.OPERATOR, data));
+                        data = "";
+                        data += c;
+                        type = Type.NUMBER;
+                    } else if (isOperator(c)) {
+                        data += c;
+                        type = Type.OPERATOR;
+                    } else if (isSymbol(c)) {
+                        tokens.add(new Token(Type.OPERATOR, data));
+                        data = "";
+                        data += c;
+                        type = Type.SYMBOL;
+                    } else if (c == '\n') {
+                        tokens.add(new Token(Type.OPERATOR, data));
+                        data = "";
+                        type = Type.EOF;
+                    } else {
+                        data += c;
+                        type = Type.ERROR;
+                    }
                     break;
                 case Type.SYMBOL:
+                    if (c == ' ') {
+                        tokens.add(new Token(Type.SYMBOL, data));
+                        data = "";
+                        type = Type.READ;
+                    } else if (isNumber(c)) {
+                        tokens.add(new Token(Type.SYMBOL, data));
+                        data = "";
+                        data += c;
+                        type = Type.NUMBER;
+                    } else if (isOperator(c)) {
+                        tokens.add(new Token(Type.SYMBOL, data));
+                        data = "";
+                        data += c;
+                        type = Type.OPERATOR;
+                    } else if (isSymbol(c)) {
+                        data += c;
+                        type = Type.SYMBOL;
+                    } else if (c == '\n') {
+                        tokens.add(new Token(Type.SYMBOL, data));
+                        data = "";
+                        type = Type.EOF;
+                    } else {
+                        data += c;
+                        type = Type.ERROR;
+                    }
                     break;
                 case Type.EOF:
                     break;
