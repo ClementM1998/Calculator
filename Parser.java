@@ -9,6 +9,14 @@ public class Parser {
         this.tokens = tokens;
     }
 
+    private Object parsePrimary() {
+        if (match(Type.SYMBOL) && peek().data.equals("(")) {
+            consume(Type.SYMBOL);
+            Object expression = parseExpression();
+            if (!match(Type.SYMBOL) || !peek().data.equals(")")) throw new RuntimeException("Expected ')' but found: " + peek().data));
+            consume(Type.SYMBOL);
+            return expression;
+
     private Token consume(Type ... types) {
         if (currentTokenIndex >= tokens.size()) throw new RuntimeException("Unexpected end of tokens");
         Token token = tokens.get(currentTokenIndex++);
