@@ -9,6 +9,32 @@ public class Parser {
         this.tokens = tokens;
     }
 
+    public Object parseExpression() {
+        return parseTerm();
+    }
+
+    private Object parseTerm() {
+        Object left = parseFactor();
+        while (match(Type.OPERATOR) && (peek().data.equals("+") || peek().data.equals("-"))) {
+            String operator = consume(Type.OPERATOR).data;
+            Object right = parseFactor();
+            if (operator.equals("+")) left = new Arithmetic(left, "+", right);
+            else if (operator.equals("-")) left = new Arithmetic(left, "-", right);
+        }
+        return left;
+    }
+
+    private Object parseFactor() {
+        Object left = parsePrimary();
+        while (match(Type.OPERATOR) && (peek().data.equals("*") || peek().data.equals("/"))) {
+            String operator = consume(Type.OPERATOR).data;
+            Object right = parsePrimary();
+            if (operator.equals("*")) left = new Arithmetic(left, "*", right);
+            else if (operator.equals("/")) left = new Arithmetic(left, "/", right);
+        }
+        return left;
+    }
+
     private Object parsePrimary() {
         if (match(Type.SYMBOL) && peek().data.equals("(")) {
             consume(Type.SYMBOL);
