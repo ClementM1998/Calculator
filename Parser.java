@@ -27,5 +27,12 @@ public class Parser {
         return currentTokenIndex < tokens.size() && tokens.get(currentTokenIndex).type == type;
     }
 
+    private boolean matchAndConsume(Type type) {
+        if (match(type)) {
+            currentTokenIndex++;
+            return true;
+        }
+        return false;
+    }
     
 }
