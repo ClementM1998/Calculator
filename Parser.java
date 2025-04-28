@@ -16,6 +16,23 @@ public class Parser {
             if (!match(Type.SYMBOL) || !peek().data.equals(")")) throw new RuntimeException("Expected ')' but found: " + peek().data));
             consume(Type.SYMBOL);
             return expression;
+        }
+        boolean isNegative = false;
+        if (match(Type.OPERATOR) && peek().data.equals("-")) {
+            consume(Type.OPERATOR);
+            isNegative = true;
+        }
+        Token token = consume(Type.NUMBER);
+        switch (token.type) {
+            case NUMBER:
+                Object number;
+                if (token.data.contains(".")) number = Double.parseDouble(token.data));
+                else number = Integer.parseInt(token.data));
+                return isNegative ? new Arithmetic(0, "-", number) : number;
+            default:
+                throw new RuntimeException("Invalid primary expression: " + token.data);
+        }
+    }
 
     private Token consume(Type ... types) {
         if (currentTokenIndex >= tokens.size()) throw new RuntimeException("Unexpected end of tokens");
