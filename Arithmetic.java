@@ -11,44 +11,31 @@ public class Arithmetic {
     }
 
     private Object resultArithmetic() {
-        if (left instanceof Double) {
-            switch (operator) {
-                case "+":
-                    return Double.parseDouble(left) + Integer.parseInt(right);
-                case "-":
-                    return Double.parseDouble(left) - Integer.parseInt(right);
-                case "*":
-                    return Double.parseDouble(left) * Integer.parseInt(right);
-                case "/":
-                    return Double.parseDouble(left) / Integer.parseInt(right);
-            }
-        } else if (right instanceof Double) {
-            switch (operator) {
-                case "+":
-                    return Integer.parseInt(left) + Double.parseDouble(right);
-                case "-":
-                    return Integer.parseInt(left) - Double.parseDouble(right);
-                case "*":
-                    return Integer.parseInt(left) * Double.parseDouble(right);
-                case "/":
-                    return Integer.parseInt(left) / Double.parseDouble(right);
-            }
-        } else {
-            switch (operator) {
-                case "+":
-                    return Integer.parseInt(left) + Integer.parseInt(right);
-                case "-":
-                    return Integer.parseInt(left) - Integer.parseInt(right);
-                case "*":
-                    return Integer.parseInt(left) * Integer.parseInt(right);
-                case "/":
-                    return Integer.parseInt(left) / Integer.parseInt(right);
-            }
+        switch (operator) {
+            case "+":
+                if (left instanceof Double) return Double.parseDouble(left.toString()) + Integer.parseInt(right.toString());
+                else if (right instanceof Double) return Integer.parseInt(left.toString()) + Double.parseDouble(right.toString());
+                else return Integer.parseInt(left.toString()) + Integer.parseInt(right.toString());
+            case "-":
+                if (left instanceof Double) return Double.parseDouble(left.toString()) - Integer.parseInt(right.toString());
+                else if (right instanceof Double) return Integer.parseInt(left.toString()) - Double.parseDouble(right.toString());
+                else return Integer.parseInt(left.toString()) - Integer.parseInt(right.toString());
+            case "*":
+                if (left instanceof Double) return Double.parseDouble(left.toString()) * Integer.parseInt(right.toString());
+                else if (right instanceof Double) return Integer.parseInt(left.toString()) * Double.parseDouble(right.toString());
+                else return Integer.parseInt(left.toString()) * Integer.parseInt(right.toString());
+            case "/":
+                //if (left instanceof Double) return Double.parseDouble(left.toString()) / Integer.parseInt(right.toString());
+                //else if (right instanceof Double) return Integer.parseInt(left.toString()) / Double.parseDouble(right.toString());
+                //else return Integer.parseInt(left.toString()) / Integer.parseInt(right.toString());
+                return Double.parseDouble(left.toString()) / Double.parseDouble(right.toString());
         }
+        throw new RuntimeException("Unexcepted operator");
     }
 
     public String toString() {
-        return resultArithmetic();
+        Object o = resultArithmetic();
+        return String.valueOf(o);
     }
-    
+
 }
