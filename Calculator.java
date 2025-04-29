@@ -24,10 +24,11 @@ public class Calculator {
                 } catch (Exception e) {
                     System.out.println("Screen can't clear");
                 }
+            } else {
+                parser = new Parser(lexer.tokenize(in));
+                Object value = parser.execute();
+                if (value != null) System.out.println(value + " #");
             }
-            parser = new Parser(lexer.tokenize(in));
-            Object value = parser.execute();
-            if (value != null) System.out.println(value + " #");
         }
 
     }
