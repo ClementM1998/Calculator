@@ -1,15 +1,24 @@
-
 import java.util.ArrayList;
 
 public class Parser {
-    private int currentTokenIndex = 0;
     private ArrayList<Token> tokens;
+    private Object result;
+    private int currentTokenIndex = 0;
 
     public Parser(ArrayList<Token> tokens) {
         this.tokens = tokens;
     }
 
-    public Object parseExpression() {
+    public Object execute() {
+        try {
+            return parseExpression();
+        } catch (RuntimeException e) {
+            System.out.println("SYNTAX ERROR IN LINE : " + e.getMessage());
+            return null;
+        }
+    }
+
+    private Object parseExpression() {
         return parseTerm();
     }
 
@@ -39,7 +48,9 @@ public class Parser {
         if (match(Type.SYMBOL) && peek().data.equals("(")) {
             consume(Type.SYMBOL);
             Object expression = parseExpression();
-            if (!match(Type.SYMBOL) || !peek().data.equals(")")) throw new RuntimeException("Expected ')' but found: " + peek().data));
+            if (!match(Type.SYMBOL) || !peek().data.equals(")")) {
+                throw new RuntimeException("Expected ')' but found: " + peek().data);
+            }
             consume(Type.SYMBOL);
             return expression;
         }
@@ -52,8 +63,8 @@ public class Parser {
         switch (token.type) {
             case NUMBER:
                 Object number;
-                if (token.data.contains(".")) number = Double.parseDouble(token.data));
-                else number = Integer.parseInt(token.data));
+                if (token.data.contains(".")) number = Double.parseDouble(token.data);
+                else number = Integer.parseInt(token.data);
                 return isNegative ? new Arithmetic(0, "-", number) : number;
             default:
                 throw new RuntimeException("Invalid primary expression: " + token.data);
@@ -85,5 +96,5 @@ public class Parser {
         }
         return false;
     }
-    
+
 }
