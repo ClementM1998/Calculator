@@ -5,6 +5,7 @@ public class Lexer {
     private ArrayList<Token> tokens = new ArrayList<Token>();
     private String line;
     private Type type = Type.READ;
+    private String data = "";
     
     public Lexer(String in) {
         this.line = in;
