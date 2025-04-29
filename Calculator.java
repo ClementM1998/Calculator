@@ -10,7 +10,8 @@ public class Calculator {
 
         while (true) {
             System.out.print("Calculator > ");
-            String in = scanner.nextLine();
+            String in = scanner.nextLine().toLowerCase();
+            if (in.equals("exit")) break;
             parser = new Parser(lexer.tokenize(in));
             Object value = parser.execute();
             if (value != null) System.out.println(value + " #");
