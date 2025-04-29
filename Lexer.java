@@ -1,22 +1,18 @@
-
 import java.util.ArrayList;
 
 public class Lexer {
-    private ArrayList<Token> tokens = new ArrayList<Token>();
-    private String line;
-    private Type type = Type.READ;
-    private String data = "";
-    
-    public Lexer(String in) {
-        this.line = in;
-    }
 
-    public ArrayList<Token> tokenize() {
-        for (char c : line.toCharArray()) {
+    public ArrayList<Token> tokenize(String in) {
+        ArrayList<Token> tokens = new ArrayList<>();
+        Type type = Type.READ;
+        String data = "";
+        in = in + '\n';
+        for (char c : in.toCharArray()) {
             switch (type) {
-                case Type.READ:
-                    if (c == ' ') continue;
-                    else if (isNumber(c)) {
+                case READ:
+                    if (c == ' ') {
+                        continue;
+                    } else if (isNumber(c)) {
                         data += c;
                         type = Type.NUMBER;
                     } else if (isOperator(c)) {
@@ -33,7 +29,7 @@ public class Lexer {
                         type = Type.ERROR;
                     }
                     break;
-                case Type.NUMBER:
+                case NUMBER:
                     if (c == ' ') {
                         tokens.add(new Token(Type.NUMBER, data));
                         data = "";
@@ -60,7 +56,7 @@ public class Lexer {
                         type = Type.ERROR;
                     }
                     break;
-                case Type.OPERATOR:
+                case OPERATOR:
                     if (c == ' ') {
                         tokens.add(new Token(Type.OPERATOR, data));
                         data = "";
@@ -87,7 +83,7 @@ public class Lexer {
                         type = Type.ERROR;
                     }
                     break;
-                case Type.SYMBOL:
+                case SYMBOL:
                     if (c == ' ') {
                         tokens.add(new Token(Type.SYMBOL, data));
                         data = "";
@@ -108,15 +104,17 @@ public class Lexer {
                     } else if (c == '\n') {
                         tokens.add(new Token(Type.SYMBOL, data));
                         data = "";
+                        data += c;
                         type = Type.EOF;
                     } else {
                         data += c;
                         type = Type.ERROR;
                     }
                     break;
-                case Type.EOF:
+                case EOF:
+                    tokens.add(new Token(Type.EOF, ""));
                     break;
-                case Type.ERROR:
+                case ERROR:
                     if (c == '\n') {
                         tokens.add(new Token(Type.ERROR, data));
                         data = "";
@@ -125,6 +123,10 @@ public class Lexer {
                         data += c;
                         type = Type.ERROR;
                     }
+                    break;
+                default:
+                    data += c;
+                    type = Type.ERROR;
                     break;
             }
         }
@@ -142,5 +144,5 @@ public class Lexer {
     private boolean isSymbol(char c) {
         return c == '(' || c == ')';
     }
-    
+
 }
